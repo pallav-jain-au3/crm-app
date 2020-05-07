@@ -1,5 +1,5 @@
-const isEmpty = string => string.trim() === "";
-const isValidEmail = email => {
+const isEmpty = (string) => string.trim() === "";
+const isValidEmail = (email) => {
   const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (email.match(emailRegEx)) {
     return true;
@@ -8,7 +8,7 @@ const isValidEmail = email => {
   }
 };
 
-exports.validateSignup = data => {
+exports.validateSignup = (data) => {
   let error = {};
   if (isEmpty(data.email)) {
     error.email = "Must not be empty";
@@ -26,12 +26,11 @@ exports.validateSignup = data => {
 
   return {
     error: error,
-    valid: Object.keys(error).length === 0 ? true : false
+    valid: Object.keys(error).length === 0 ? true : false,
   };
 };
 
-
-exports.loginValidation = data => {
+exports.loginValidation = (data) => {
   let error = {};
   if (isEmpty(data.email)) {
     error.email = "Must not be empty";
@@ -45,6 +44,6 @@ exports.loginValidation = data => {
 
   return {
     error: error,
-    valid: Object.keys(error).length === 0 ? true : false
+    valid: Object.keys(error).length === 0 ? true : false,
   };
 };

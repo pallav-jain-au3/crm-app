@@ -1,43 +1,73 @@
-import {SIGNUP_USER, SET_LOADING, SET_USER, SET_ERRORS} from '../types';
-import axios from 'axios';
-let endpoint = 'http://localhost:5000'
-const setLoading = () => dispatch => {
-    dispatch({
-        type: SET_LOADING
-    })
+import { SET_LOADING, SET_USER, SET_ERRORS } from "../types";
+import axios from "axios";
+let endpoint = "http://localhost:5000";
+const setLoading = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+  });
 };
 
-export const signupUser = (userData, history) => dispatch => {
-    dispatch(setLoading())
-    axios.post(`${endpoint}/signup`, userData)
-    .then(res =>{
-         setAuthorizationToken(res.data.token)
-         dispatch(getUserData())
-         history.push('/')
+export const signupUser = (userData, history) => (dispatch) => {
+  dispatch(setLoading());
+  axios
+    .post(`${endpoint}/signup`, userData)
+    .then((res) => {
+      setAuthorizationToken(res.data.token);
+      dispatch(getUserData());
+      history.push("/");
     })
-    .catch(err => {
-        console.error(err.response.data)
-        dispatch({
-            type:SET_ERRORS,
-            payload : err.response.data
-        })
+    .catch((err) => {
+      console.error(err.response.data);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
+export const loginUser = (userData, history) => (dispatch) => {
+  dispatch(setLoading());
+  axios
+    .post(`${endpoint}/login`, userData)
+    .then((res) => {
+      setAuthorizationToken(res.data.token);
+      dispatch(getUserData());
+      history.push("/");
     })
-}
+    .catch((err) => {
+      console.error(err.response.data);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
 
-const setAuthorizationToken = token => {
-    localStorage.setItem("auth-token", token);
-    axios.defaults.headers.common["auth-token"] = token;
-  };
+const setAuthorizationToken = (token) => {
+  localStorage.setItem("auth-token", token);
+  axios.defaults.headers.common["auth-token"] = token;
+};
 
-const getUserData  = () =>dispatch => {
-   axios.get(endpoint+'/authUser')
-   .then(res =>{   
-        return dispatch ({
-        type :SET_USER,
-        payload:res.data
+export const getUserData = () => (dispatch) => {
+  axios
+    .get(endpoint + "/authUser")
+    .then((res) => {
+      return dispatch({
+        type: SET_USER,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-   })})
-   .catch(err => {
-       console.log(err)
-   })
-}
+export const verifyEmail = () => {
+  let status;
+  axios
+    .get(endpoint + "/sendVerify")
+    .then((res) => {
+      status = res;
+    })
+    .catch((err) => console.log(err));
+  return status;
+};

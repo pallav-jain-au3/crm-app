@@ -8,7 +8,7 @@ require("dotenv").config();
 const cryptr = new Cryptr(process.env.CRYPTR_SECRET);
 
 exports.addUser = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   let { valid, error } = validateSignup(req.body);
   console.log(valid, error);
   if (!valid) return res.status(400).json(error);
@@ -121,15 +121,15 @@ exports.getUserData = async (req, res) => {
   let _id = req.user._id;
   try {
     const user = await User.findOne({ _id });
-    console.log(user);
     if (!user) {
       return res.status(400).json({ error: "Invalid Request" });
     }
     const userData = {
       email: user.email,
-      _id ,
-      customers : user.customers 
-    }
+      _id,
+      customers: user.customers,
+      isVerified: user.isVerified,
+    };
     res.status(200).json(userData);
     return;
   } catch (err) {

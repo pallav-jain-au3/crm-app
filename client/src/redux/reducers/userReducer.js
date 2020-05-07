@@ -18,6 +18,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         user: action.payload,
+        authenticated : true,
         error: null,
       };
     case SET_ERRORS:
