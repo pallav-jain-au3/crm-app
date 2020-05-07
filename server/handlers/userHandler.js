@@ -8,18 +8,21 @@ require("dotenv").config();
 const cryptr = new Cryptr(process.env.CRYPTR_SECRET);
 
 exports.addUser = async (req, res) => {
-  console.log(req.body);
+  console.log("hi")
   let { valid, error } = validateSignup(req.body);
-  console.log(valid, error);
-  if (!valid) return res.status(400).json(error);
+  if (!valid) {
+    console.log(error)
+    return res.status(400).json(error)
+  };
 
   const emailExist = await User.findOne({
     email: req.body.email,
   });
-  if (emailExist)
+  if (emailExist){
     return res.status(400).json({
       email: "Email already exists",
     });
+  } 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
   const user = new User({
@@ -37,7 +40,8 @@ exports.addUser = async (req, res) => {
     );
     res.status(200).json({ token: token });
   } catch (err) {
-    res.status(400).json({ err: err.errmsg });
+    console.log(err)
+    res.status(400).send( err);
   }
 };
 
@@ -122,7 +126,7 @@ exports.getUserData = async (req, res) => {
   try {
     const user = await User.findOne({ _id });
     if (!user) {
-      return res.status(400).json({ error: "Invalid Request" });
+      throw { error: "Invalid Request" };
     }
     const userData = {
       email: user.email,

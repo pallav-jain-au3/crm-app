@@ -47,3 +47,19 @@ exports.loginValidation = (data) => {
     valid: Object.keys(error).length === 0 ? true : false,
   };
 };
+
+exports.validateCustomer = (data) => {
+  let error = {} ;
+  if (isEmpty(data.email)) {
+    error.email = "Must not be empty";
+  } else if (!isValidEmail(data.email)) {
+    error.email = "Email must be a valid string";
+  }
+  if (isEmpty(data.name)){
+    error.name = "Must not be empty"
+  }
+  return {
+    error: error,
+    valid: Object.keys(error).length === 0 ? true : false,
+  };
+}
