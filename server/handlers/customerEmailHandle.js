@@ -1,29 +1,39 @@
-const EmailSchema = require("../models/MailSchema");
+const Email = require('../models/Email')
 const User = require("../models/UserSchema");
 const Customer = require("../models/CustomerSchema");
+const SentMail = require('../models/SentMail')
+const dayjs = require('dayjs')
 
 exports.addEmail = async (req, res) => {
   
-  const { recieverId, text, html, subject, time } = req.body;
+  let { recieverId, text, html, subject, frequency , startDate :{date, month, year} , frequencyUnit} = req.body;
+
+
   const senderId = req.user._id;
   try {
     const sender = await User.findOne({ _id: senderId });
-    if (!sender) throw { error: "Invalid request" };
     const reciever = await Customer.findOne({ _id: recieverId });
     if (!reciever) throw { error: "Invalid request" };
-    if (reciever.createdBy !== senderId) throw { error: "Invalid Request" };
-    const emailDetails = EmailSchema({
+    if (reciever.createdBy !== senderId) throw { error: "Invalid Request"};
+    const startDate = dayjs(`${year}-${month}-${date}`).toISOString()
+    const endDate = dayjs(startDate).add(frequency, frequencyUnit).toISOString()
+    const emailDetails = Email({
       recieverId,
       senderId,
       text,
       sender: sender.email,
       reciever: reciever.email,
-      time: Date.now(),
+      html,
+      subject,
+      createdAt: Date.now(),
+      startDate ,
+      endDate,
+      frequency, 
+      frequencyUnit
     });
-
     const resposnse = await emailDetails.save();
     console.log(resposnse);
-    res.status(200).json({ status: "Added Successfully " });
+     res.status(200).json(resposnse);
 
     return;
   } catch (err) {
@@ -31,4 +41,34 @@ exports.addEmail = async (req, res) => {
     res.status(400).json(err);
   }
 };
+
+exports.getSentEmails = async(req, res) => {
+  const senderId = req.user._id;
+  const recieverId = req.query.customer
+  let resposnse = []
+  try {
+    const sentMails = await SentMail.find({senderId, recieverId})
+    sentMails.forEach(mail => {
+      let currMail = {
+        sentTime: mail.sentTime,
+        recieverId:mail.recieverId,
+        sender: mail.sender,
+        reciever:mail.reciever,
+        status:mail.status,
+        subject: mail.subject,
+        html: mail.html,
+        text:mail.text
+       }
+       resposnse.push(currMail)
+      
+    })
+
+    res.status(400).json({emails:resposnse})
+  }
+  catch(error){
+    console.log(error)
+    res.status(400).json(error)
+  }
+
+}
 

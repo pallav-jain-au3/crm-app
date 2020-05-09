@@ -4,9 +4,10 @@ const port = process.env.PORT || 5000;
 const app = express();
 const isEmailVerified = require('./isEmailVerified')
 const {addCustomer, getCustomers, updateCustomer, deleteCustomer} = require('./handlers/customerHandle')
-const {addEmail} = require('./handlers/customerEmailHandle')
+const {addEmail, getSentEmails} = require('./handlers/customerEmailHandle')
 const mongoose = require("mongoose");
 const cors = require("cors");
+require('./cronJob')
 const {
   addUser,
   loginUser,
@@ -14,6 +15,7 @@ const {
   verifyEmail,
   getUserData,
 } = require("./handlers/userHandler");
+
 
 const auth = require("./auth");
 require("dotenv").config();
@@ -27,6 +29,8 @@ mongoose.connect(
   },
   () => console.log("connected to database")
 );
+
+
 // User Routes
 app.post("/signup", addUser);
 app.post("/login", loginUser);
@@ -43,7 +47,6 @@ app.get('/customer/update/:id', auth, isEmailVerified, updateCustomer);
 app.delete('/customer/delete/:id', auth, isEmailVerified, deleteCustomer);
 
 // email routes
-app.post('/email/add', auth, isEmailVerified, addEmail)
-
-
+app.post('/email/add', auth, isEmailVerified, addEmail);
+app.get('/email/sent', auth, getSentEmails)
 app.listen(port, () => console.log("listenning on 5000"));
