@@ -30,8 +30,19 @@ exports.addCustomer = async (req, res) => {
 exports.getCustomers = async (req, res) => {
   const createdBy = req.user._id;
   try {
-    let customers = Customer.find({}).where("createdBy").equals(createdBy);
-    res.status(200).json(customers);
+    let customers = await Customer.find({}).where("createdBy").equals(createdBy);
+    let customersData = []
+    customers.forEach(customer => {
+      const customerData = {
+        createdAt : customer.createdAt,
+        _id : customer._id,
+         name : customer.name,
+        email: customer.email
+      }
+      customersData.push(customerData)
+      
+    })
+    res.status(200).json(customersData);
   } catch (err) {
     console.log(err.message);
     res.status(400).json(err);
@@ -77,3 +88,22 @@ exports.deleteCustomer = async (req, res) => {
 };
 
 
+exports.getCustomer = async (req, res) => {
+  const createdBy = req.user._id;
+  const customer_id = req.params.id
+  try{
+    const customer = await Customer.findOne({_id : customer_id})
+    if (!customer) throw {error : "Invalid Request"}
+    if (customer.createdBy !== createdBy) throw {error : "Unauthorised Request"}
+    const customerData = {
+      name : customer.name,
+    email : customer.email,
+    createdAt : customer.createdAt,
+   
+    }
+    res.status(200).json(customerData)
+  }catch(error){
+    console.log(error)
+    res.status(400).json(error)
+  }
+}

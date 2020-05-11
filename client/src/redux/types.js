@@ -1,3 +1,10 @@
 export const SET_LOADING = "SET_LOADING";
 export const SET_USER = "SET_USER";
 export const SET_ERRORS = "SET_ERRORS";
+export const SET_EMAILS = 'SET_EMAILS';
+export const SET_CUSTOMERS = 'GET_CUSTOMERS';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const SET_CUSTOMERS_ERRORS = 'SET_CUSTOMERS_ERRORS';
+export const SET_CUSTOMER_LOADING = 'SET_CUSTOMER_LOADING'
+export const SET_CUSTOMER = 'SET_CUSTOMER';
+export const DELETE_CUSTOMER = 'DELETE_CUSTOMER';

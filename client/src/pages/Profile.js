@@ -4,7 +4,6 @@ import { verifyEmail } from "../redux/actions/userActions";
 class Profile extends React.Component {
   handleVerify = () => {
     let response = verifyEmail();
-    console.log(response);
   };
   render() {
     const { user, authenticated } = this.props.user;

@@ -1,6 +1,6 @@
-import { SET_LOADING, SET_USER, SET_ERRORS } from "../types";
+import { SET_LOADING, SET_USER, SET_ERRORS, LOGOUT_USER } from "../types";
 import axios from "axios";
-let endpoint = "http://localhost:5000";
+import {endpoint} from '../endpoint'
 const setLoading = () => (dispatch) => {
   dispatch({
     type: SET_LOADING,
@@ -71,3 +71,13 @@ export const verifyEmail = () => {
     .catch((err) => console.log(err));
   return status;
 };
+
+
+export const logoutUser = (history) => dispatch => {
+  localStorage.removeItem('auth-token')
+  dispatch({
+    type:LOGOUT_USER
+  })
+  history.push('/')
+
+}

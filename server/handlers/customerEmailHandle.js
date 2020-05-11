@@ -44,12 +44,14 @@ exports.addEmail = async (req, res) => {
 
 exports.getSentEmails = async(req, res) => {
   const senderId = req.user._id;
+  console.log("senderid", senderId)
   const recieverId = req.query.customer
   let resposnse = []
   try {
-    const sentMails = await SentMail.find({senderId, recieverId})
+    const sentMails = await SentMail.find({senderId})
     sentMails.forEach(mail => {
       let currMail = {
+        _id : mail._id,
         sentTime: mail.sentTime,
         recieverId:mail.recieverId,
         sender: mail.sender,
@@ -62,8 +64,8 @@ exports.getSentEmails = async(req, res) => {
        resposnse.push(currMail)
       
     })
-
-    res.status(400).json({emails:resposnse})
+    console.log(resposnse)
+    res.status(200).json({emails:resposnse})
   }
   catch(error){
     console.log(error)

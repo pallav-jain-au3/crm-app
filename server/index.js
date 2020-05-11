@@ -3,7 +3,7 @@ const path = require("path");
 const port = process.env.PORT || 5000;
 const app = express();
 const isEmailVerified = require('./isEmailVerified')
-const {addCustomer, getCustomers, updateCustomer, deleteCustomer} = require('./handlers/customerHandle')
+const {addCustomer, getCustomers, updateCustomer, deleteCustomer, getCustomer} = require('./handlers/customerHandle')
 const {addEmail, getSentEmails} = require('./handlers/customerEmailHandle')
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -41,12 +41,13 @@ app.get("/authUser", auth, getUserData);
 
 // Auth Routes
 
-app.post('/addCustomer',auth, isEmailVerified, addCustomer)
+app.post('/customer/add',auth, isEmailVerified, addCustomer)
 app.get('/customers', auth, isEmailVerified,getCustomers)
-app.get('/customer/update/:id', auth, isEmailVerified, updateCustomer);
+app.post('/customer/update/:id', auth, isEmailVerified, updateCustomer);
 app.delete('/customer/delete/:id', auth, isEmailVerified, deleteCustomer);
+app.get('/customer/:id', auth, getCustomer)
 
 // email routes
-app.post('/email/add', auth, isEmailVerified, addEmail);
+app.post('/email/schedule/add', auth, isEmailVerified, addEmail);
 app.get('/email/sent', auth, getSentEmails)
 app.listen(port, () => console.log("listenning on 5000"));

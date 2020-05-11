@@ -10,6 +10,11 @@ import Profile from "./pages/Profile";
 import {getUserData} from './redux/actions/userActions';
 import axios from 'axios';
 import AuthRoute from './AuthRoute'
+import Customers from './pages/Customers'
+import EditCustomer from './components/EditCustomer';
+import AddNewCustomer from './components/AddNewCustomer'
+import ScheduleMail from "./components/ScheduleMail";
+
 const App = () => {
 
 	let token = localStorage.getItem('auth-token');
@@ -20,12 +25,16 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Navbar />
+        <Navbar/>
         <div className="container">
           <Route exact path="/" component={Home} />
           <AuthRoute exact path="/signup" component={Signup} />
           <AuthRoute exact path="/login" component={Login} />
           <Route path="/profile" component={Profile} />
+          <Route path = '/customers' component = {Customers} />
+          <Route path = '/customer/edit/:id' component = {EditCustomer} />
+          <Route path = '/customer/add' component = {AddNewCustomer} />
+          <Route path = '/email/schedule/add/:customerId' component = {ScheduleMail} />
         </div>
       </Router>
     </Provider>

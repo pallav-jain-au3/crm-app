@@ -1,9 +1,10 @@
-import { SET_LOADING, SET_USER, SET_ERRORS } from "../types";
+import { SET_LOADING, SET_USER, SET_ERRORS, LOGOUT_USER } from "../types";
 
 let initialState = {
   user: null,
   loading: false,
   error: null,
+  authenticated: false
 };
 
 export default function (state = initialState, action) {
