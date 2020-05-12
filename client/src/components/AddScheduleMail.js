@@ -3,7 +3,7 @@ import Calender from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { connect} from 'react-redux'
 import {scheduleMail} from '../redux/actions/emailActions'
-class ScheduleMail extends React.Component {
+class AddScheduleMail extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -21,7 +21,6 @@ class ScheduleMail extends React.Component {
 
   handleSubmit = (e) => {
       e.preventDefault()
-      console.log(this.state)
      const date  = new Date(this.state.date)
      const startDate = {
          date : date.getDate(),
@@ -37,7 +36,7 @@ class ScheduleMail extends React.Component {
          frequencyUnit : this.state.frequencyUnit,
          startDate
      }
-     this.props.scheduleMail(scheduleData)
+     this.props.scheduleMail(scheduleData, this.props.history)
       
   }
   onChange = (e) => {
@@ -169,5 +168,5 @@ const mapStateToProps = (state) =>({
 const mapActionToProps = {
     scheduleMail
 }
-export default connect(mapStateToProps, mapActionToProps)(ScheduleMail);
+export default connect(mapStateToProps, mapActionToProps)(AddScheduleMail);
 

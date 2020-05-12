@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
     const user = await User.findOne({_id:verifiy});
     if (!user) throw {error : "Invalid User"}
     req.user = verifiy;
+    req.user.email = user.email
     next();
   } catch (error) {
     console.log(error)

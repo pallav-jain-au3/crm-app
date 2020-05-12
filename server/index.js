@@ -4,7 +4,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 const isEmailVerified = require('./isEmailVerified')
 const {addCustomer, getCustomers, updateCustomer, deleteCustomer, getCustomer} = require('./handlers/customerHandle')
-const {addEmail, getSentEmails} = require('./handlers/customerEmailHandle')
+const {addEmail, getSentEmails, getAllScheduledEmail,sendNowEmail, deleteScheduledMail} = require('./handlers/customerEmailHandle')
 const mongoose = require("mongoose");
 const cors = require("cors");
 require('./cronJob')
@@ -49,5 +49,9 @@ app.get('/customer/:id', auth, getCustomer)
 
 // email routes
 app.post('/email/schedule/add', auth, isEmailVerified, addEmail);
-app.get('/email/sent', auth, getSentEmails)
+app.get('/email/sent', auth, getSentEmails);
+app.get('/emails/schdeduled',auth, getAllScheduledEmail);
+app.post('/email/sendNow', auth, sendNowEmail);
+app.delete('/email/schedule/delete/:emailId', auth, deleteScheduledMail);
+
 app.listen(port, () => console.log("listenning on 5000"));

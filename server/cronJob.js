@@ -3,7 +3,7 @@ const smptTransport = require("./stmpTransport");
 const { scheduleAndUpdateEmails } = require("./scheduleAndUpdateMails");
 const { addSentMail } = require("./addSentMail");
 const Email = require("./models/Email");
-cron.schedule("0    00 09    *    *    *", function () {
+cron.schedule("0    21 19    *    *    *", function () {
   console.log("started");
   scheduleAndUpdateEmails();
   sendActiveMails();

@@ -75,6 +75,7 @@ export const verifyEmail = () => {
 
 export const logoutUser = (history) => dispatch => {
   localStorage.removeItem('auth-token')
+  delete axios.defaults.headers.common['auth-token']
   dispatch({
     type:LOGOUT_USER
   })

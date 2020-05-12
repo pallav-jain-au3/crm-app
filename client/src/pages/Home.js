@@ -5,15 +5,13 @@ import Conversation from '../components/Conversation'
 class Home extends React.Component {
 
   componentDidMount(){
-  
-    this.props.getSentMails()
    
-     
-     
-  }
+      this.props.getSentMails()
+    
+ }
+
   render() {
     const loading = this.props.loading
-    console.log("rendered",this.props.authenticated)
     return (
       <div className="container">
       <h1>Home</h1>

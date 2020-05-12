@@ -48,6 +48,11 @@ class Navbar extends React.Component {
             </Link>
           </li>
           <li className="nav-item">
+          <Link className="nav-link" to="/email/schedule">
+            Scheduled Mails
+          </Link>
+        </li>
+          <li className="nav-item">
           <button className="btn btn-dark" onClick = {this.handleLogout}>
             Logout
           </button>

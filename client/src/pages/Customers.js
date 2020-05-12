@@ -46,8 +46,8 @@ class Customers extends React.Component {
                      <p>Added : {dayjs(customer.createdAt).fromNow()}</p>
                       <Link to = {`/customer/edit/${customer._id}`}><button className = "btn btn-dark">Edit</button></Link>
                       <button className = "btn m-3 btn-danger" onClick = {() =>this.handleDelete(customer._id)}>Delete</button>
-                      <Link to = {`/email/schedule/add/${customer._id}`}><button className = "btn btn-info m-3">Schedule email</button></Link>
-                      <button>Send Email Now</button>
+                      <Link to = {`/email/scheduled/add/${customer._id}`}><button className = "btn btn-info m-3">Schedule email</button></Link>
+                      <Link to = {'/send/email/' + customer._id}><button type = "button" className = "btn btn-light">Send Email Now</button></Link>
                     </li>
                   ))}
                 </ul>

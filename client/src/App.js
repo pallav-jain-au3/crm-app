@@ -13,7 +13,9 @@ import AuthRoute from './AuthRoute'
 import Customers from './pages/Customers'
 import EditCustomer from './components/EditCustomer';
 import AddNewCustomer from './components/AddNewCustomer'
-import ScheduleMail from "./components/ScheduleMail";
+import AddScheduleMail from "./components/AddScheduleMail";
+import ScheduledMails from "./components/ScheduledMails";
+import  SendMailNow  from "./components/SendMailNow";
 
 const App = () => {
 
@@ -34,7 +36,10 @@ const App = () => {
           <Route path = '/customers' component = {Customers} />
           <Route path = '/customer/edit/:id' component = {EditCustomer} />
           <Route path = '/customer/add' component = {AddNewCustomer} />
-          <Route path = '/email/schedule/add/:customerId' component = {ScheduleMail} />
+          <Route path = '/email/scheduled/add/:customerId' component = {AddScheduleMail} />
+          <Route path = '/email/schedule' component = {ScheduledMails} />
+          <Route path = '/send/email/:customerId' component = {SendMailNow} />
+
         </div>
       </Router>
     </Provider>
