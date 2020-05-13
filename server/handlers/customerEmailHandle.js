@@ -26,7 +26,7 @@ exports.addEmail = async (req, res) => {
     const endDate = dayjs(startDate)
       .add(frequency, frequencyUnit)
       .toISOString();
-    const emailDetails = Email({
+    const emailDetails = await Email({
       recieverId,
       senderId,
       text,

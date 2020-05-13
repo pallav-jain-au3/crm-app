@@ -4,14 +4,16 @@ const dayjs = require("dayjs");
 exports.scheduleAndUpdateEmails = async () => {
   try {
     const emails = await Emails.find({ expired: false });
+    //console.log(emails)
     emails.forEach(async (email) => {
       try {
-        if (isExpired(email.endDate)) {
+        if (!isExpired(email.endDate)) {
           const res = await Emails.findOneAndUpdate(
             { _id: email._id },
             { expired: true }
           );
         } else if (shouldSendToday(email.startDate, email.frequencyUnit)) {
+          console.log(email)
           const res = await Emails.findOneAndUpdate(
             { _id: email._id },
             { willBeSendToday: true }
@@ -27,8 +29,11 @@ exports.scheduleAndUpdateEmails = async () => {
 };
 
 function isExpired(endDate) {
-  let currDate = new Date().toISOString();
-  return dayjs(endDate).isBefore(currDate) ? true : false;
+  let currDate = new Date();
+  
+   console.log(dayjs(endDate).format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD'))
+   console.log(currDate, endDate)
+  return dayjs(currDate).isBefore(endDate) 
 }
 
 function shouldSendToday(startDate, frequencyUnit) {

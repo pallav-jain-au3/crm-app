@@ -24,9 +24,10 @@ class AddScheduleMail extends React.Component {
      const date  = new Date(this.state.date)
      const startDate = {
          date : date.getDate(),
-         month : date.getMonth(),
+         month : date.getMonth() + 1,
          year : date.getFullYear()
      }
+    
      const scheduleData = {
          recieverId : this.state.recieverId,
          text : this.state.text,
@@ -47,6 +48,7 @@ class AddScheduleMail extends React.Component {
    
   };
   onDateChange = (date) => {
+   
     this.setState({ date });
   };
   componentDidMount() {

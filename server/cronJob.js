@@ -3,15 +3,23 @@ const smptTransport = require("./stmpTransport");
 const { scheduleAndUpdateEmails } = require("./scheduleAndUpdateMails");
 const { addSentMail } = require("./addSentMail");
 const Email = require("./models/Email");
-cron.schedule("0    21 19    *    *    *", function () {
-  console.log("started");
-  scheduleAndUpdateEmails();
-  sendActiveMails();
+
+
+cron.schedule("0    38 15   *    *    *", async function () {
+  try{
+     await scheduleAndUpdateEmails();
+     await sendActiveMails();
+  }
+  catch(err){
+    console.log(err)
+  }
+ 
 });
 
 async function sendActiveMails() {
   try {
     const emails = await Email.find({}).where("willBeSendToday").equals(true);
+    console.log(emails)
     if (emails.length) {
       let result = await Promise.all(
         emails.map((email) => {
@@ -21,21 +29,21 @@ async function sendActiveMails() {
             html: email.html,
             text: email.text,
           };
-          smptTransport
+           smptTransport
             .sendMail(mailOptions)
-            .then((res) =>{
-            console.log("res", res)
-              Email.findOneAndUpdate(
+            .then( (res) =>{
+              console.log(res)
+
+              return Email.findOneAndUpdate(
                 { _id: email._id },
                 {
                   willBeSendToday: false,
                 }
             
-              )}
-            )
+              )
+              })
             .then(() => {
-                console.log("mail send")
-              addSentMail(
+              return addSentMail(
                 email.recieverId,
                 email.senderId,
                 email.reciever,
@@ -45,7 +53,6 @@ async function sendActiveMails() {
                 email.subject,
                 "success"
               );
-              return "Success"
             }
             
             )
@@ -58,6 +65,6 @@ async function sendActiveMails() {
    
     return err
   }
-  console.log(result);
+ 
 
 }
